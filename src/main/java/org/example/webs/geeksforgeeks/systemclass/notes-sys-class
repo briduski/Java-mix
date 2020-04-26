@@ -1,0 +1,6 @@
+System => standard input, standard output, and error output streams;
+       => access to externally defined properties and environment variables;
+       => a means of loading files and libraries;
+       => a utility method for quickly copying a portion of an array.
+
+It extends class Object.

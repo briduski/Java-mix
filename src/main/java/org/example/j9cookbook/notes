@@ -1,0 +1,65 @@
+java.util.concurrent
+    - Executors, thread pools, futures
+    - queues, blockingqueues
+    - lock, conditions,
+    - synchronizers: semaphores, barriers
+    - atomic vars
+
+
+Executors: execute Runnable, Callable
+
+Runnable: run(), can never be restarted or reused
+
+Recipe 22.3 interrupt
+Recipe 22.4 join
+Recipe 22.6 executors
+
+setPriority(int), getPriority
+Thread with highest priority will get execution chance prior to other threads.
+Suppose there are 3 threads t1, t2 and t3 with priorities 4, 6 and 1.
+So, thread t2 will execute first based on maximum priority 6 after that t1 will execute and then t3.
+Default priority for main thread is always 5, it can be changed later.
+Default priority for all other threads depends on the priority of parent thread.
+
+Stop Threads.
+-don't use Thread.stop()
+-controll externally with a flag
+
+Join
+Suspends the current thread until the target thread is finished (=> returns from its run() method)
+
+Synchronize
+-specifies that only one thread at a time is allowed to run the given method
+(or any other synchronized method in the same class) in a given object instance
+(for static methods, only one thread is allowed to run the method at a time).
+
+Lock
+java.util.concurrent.locks
+Lock thelock = ....
+try {
+    lock.lock( );
+    // do the work that is protected by the lock
+} finally {
+    lock.unlock( );
+}
+
+Asymmetric load patterns => pattern “reader-writer lock”
+1 writer, 1+ reader(s)
+=> readers lock for writing        (shared read access)
+=> writer wait until readers finish (exclusive write access)
+ReadWriteLock => ReentrantReadWriteLock (readLock(), writeLock())
+
+Communication between threads
+wait(), notify(), notifyAll()
+
+Fork/Join
+is an ExecutorService intended mainly => large tasks that can naturally be divided recursively,
+where you don’t have to ensure equal timing for each division.
+It uses work-stealing to keep threads busy.
+
+=> Fork/Join - extend RecursiveTask/RecursiveAction and override its compute()
+-RecursiveTask : returns value T, input param T,
+    => Used to divide a problem, each task would summarize one part and return that.
+
+-RecursiveAction : void
+    => Used to operate over a large data structure performing some transform of the data in place.
