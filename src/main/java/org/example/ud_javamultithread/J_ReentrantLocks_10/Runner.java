@@ -81,8 +81,9 @@ public class Runner {
         System.out.println("[2] Got return key!");
         cond.signal(); // indicates wakeup! to cond.await
         try {
-            System.out.print(" @ ");
+            System.out.print(" 2-@ ");
             increment();
+            System.out.print(" 3-@ ");
         } finally {
             //should be written to unlock Thread whenever signal() is called
             lock.unlock();

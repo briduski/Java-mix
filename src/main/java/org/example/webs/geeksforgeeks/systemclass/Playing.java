@@ -160,7 +160,12 @@ public class Playing {
                 new File("./src/test/resources/generated/application.properties").getAbsolutePath());
         // or
         // System.setProperty("GetEnvironmentPropertiesURL", "file:src/test/resources/EnvironmentProperties.txt");
+        String  tmp = new File("./src/test/localhost/env.properties").getAbsolutePath();
 
+        https://stackoverflow.com/questions/3665484/how-to-get-url-using-relative-path
+        //https://stackoverflow.com/questions/13869526/is-a-file-path-a-url
+        System.out.println("Res");
+        System.out.println( "file://localhost/" +tmp);
     }
     public static void loadLib() throws NullPointerException {
         // map library name
@@ -176,7 +181,7 @@ public class Playing {
     }
     public static void main(String[] args) throws IOException {
         //copyArrays();
-         systemProperties();
+        // systemProperties();
         // envProperties();
         //  times();
         // consconsole();
@@ -186,7 +191,7 @@ public class Playing {
         // secManager();
         // std();
         // loadLib();
-
+        setToEnvironmentPropertyAFile();
         Runtime.getRuntime().addShutdownHook(new Thread(
                 () -> System.out.println("Say exit, bye, chao")
         ));
