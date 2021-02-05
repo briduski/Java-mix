@@ -13,7 +13,7 @@ import static java.time.ZoneId.getAvailableZoneIds;
 public class App {
     public static void main(String[] args) {
 
-        //printZones();
+        printZones();
 
         // hardcoded
         ZonedDateTime zonedDateTimeOf

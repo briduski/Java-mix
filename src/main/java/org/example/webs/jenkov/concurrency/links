@@ -1,0 +1,13 @@
+http://tutorials.jenkov.com/java-concurrency/creating-and-starting-threads.html
+https://www.youtube.com/watch?v=eQk5AWcTS8w&list=PLL8woMHwr36EDxjUoCzboZjedsnhLP1j4&index=2
+
+The Java memory model used internally in the JVM divides memory between thread stacks and the heap.
+Each thread running in the JVM has its own thread stack.
+The thread stack contains information about what methods the thread has called to reach the current point of execution.
+ As the thread executes its code, the call stack changes.
+  contains all local variables for each method being executed (all methods on the call stack).
+ A thread can only access it's own thread stack.
+ Local variables created by a thread are invisible to all other threads than the thread who created it.
+
+
+The heap contains all objects created in your Java application, regardless of what thread created the object

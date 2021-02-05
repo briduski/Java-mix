@@ -1,0 +1,82 @@
+Test online
+https://tools.keycdn.com/http2-test
+
+
+Test with curl
+curl --http2 http://localhost:50051 --output dummy.bin
+cat dummy.bin
+
+
+Grpc client:
+// https://github.com/ktr0731/evans
+// brew tap ktr0731/evans
+// brew install evans
+// terminal: evans
+//  >         evans -r  --host=localhost --port=50052
+// >          evans -p 50053 -r
+// >> calculator.CalculatorService@localhost:50052>
+//  > show service
+//  > show message
+//  > desc SumRequest
+// Run a rpc:
+// call sum
+
+// Mongo UI: Robo 3T
+
+// Installing mongo db localhost
+// mkdir data, mkdir data/db
+// bin/mongod --dbpathh data/db
+
+// Docker + Mongo db,  standard MongoDB port, 27017,
+docker run --name some-mongo -d mongo:latest
+docker exec -it some-mongo bash
+docker logs some-mongo
+//--docker run --name some-mongo -v /my/own/datadir:/data/db -d mongo
+docker run --name some-mongo -v /Users/a01422/Documents/GitHub/udemy-grpc/grpc-java-course/mongo-db:/data/db -p 27017:27017 -d mongo
+
+
+
+// TODO make it works --> grpc gateway
+//Scala: http://www.beyondthelines.net/computing/grpc-rest-gateway-in-scala/, https://github.com/btlines/grpcgateway
+// https://cloud.google.com/endpoints/docs/grpc/transcoding
+// https://www.youtube.com/watch?v=Zf9G2KzYs7w&list=PLy_6D98if3UJd5hxWNfAqKMr15HZqFnqf&index=24
+// GO: https://www.youtube.com/watch?v=rbwvY0YpRPI
+// http://localhost:8080/v1/example/echo
+// Set up GO env
+0. https://medium.com/@jimkang/install-go-on-mac-with-homebrew-5fa421fc55f5
+1. Install go: brew install go,
+2. Update bash_profile
+vim ~/.bash_profile
+
+export GOPATH=$HOME/go
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+
+source ~/.bash_profile
+or source $HOME/.bash_profile
+
+// GRPC gateway
+// https://github.com/wejrowski/grpc-gateway-java-gradle
+// https://medium.com/@Mark.io/rest-communication-to-containerd-recipe-plus-aws-api-gateway-sprinkled-on-top-25ef1011bbf0
+
+
+// https://github.com/grpc-ecosystem/grpc-gateway
+1. Install go (set up env... )
+2. go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+3. go get -u github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
+
+
+go get github.com/gogo/gateway
+go get github.com/grpc-ecosystem/grpc-gateway/runtime
+
+
+// BloomRPC => grpc GUI
+//https://github.com/uw-labs/bloomrpc
+// Another GUI: https://github.com/fullstorydev/grpcui
+
+// grpc java examples
+ //https://github.com/saturnism/grpc-by-example-java
+
+
+// TODO: see Other
+https://github.com/grpc-ecosystem/awesome-grpc

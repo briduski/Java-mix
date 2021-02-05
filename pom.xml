@@ -39,6 +39,16 @@
       <version>1.1.10</version>
       <type>pom</type>
     </dependency>
+    <dependency>
+      <groupId>org.jgrapht</groupId>
+      <artifactId>jgrapht-core</artifactId>
+      <version>1.5.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>29.0-jre</version>
+    </dependency>
   </dependencies>
   <build>
 
@@ -47,8 +57,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>12</source>
+          <target>12</target>
         </configuration>
       </plugin>
       <plugin>

@@ -1,0 +1,120 @@
+.pem   Private Enhanced Mail  => contains: the certificate & private key <= cat server.crt server.key > server.pem
+b64 encoded + header + foot lines
+
+.key
+usually a private key.
+
+.csr || .req || .p10    Certificate signing request
+[public key + common name (required by CA)]  --> to create & sign a certificate
+
+.crt || .cer
+[public key + CA signature]
+
+.jks   Java Key Store
+Used to store:
+ - private keys with their certificate chains (root CA, intermediate CA's, single self-signe cert)
+ - certicates of other parties to&from a trust store
+
+
+Root CAs
+Theses certificates are shipped with browsers.
+
+Intermediate CA
+These are organizations which can issue certificates whose certificate themselves are signed by a Root CA.
+
+CSR
+Organization  --- Sends .csr --------> Intermediate CA  <-- Root CA
+    ^                                   |           |
+    |  [organization_domain_name].crt   |           |
+    |----SSL cert signed ---------------|           |
+    |                                               |
+    |    [intermediate.crt]                        <|
+    |---Certificate of Intermediate CA signed by Root CA
+
+= = Will generate private key(.key)for the organization and also the certificate sign request(.csr)
+openssl req -newkey rsa:2048 -nodes -keyout example.com.key -out example.com.csr
+
+* WEB BROWSER *
+
+       [Root CA]
+User -> Browser ---------------> Https ----> Organization server
+          ^                                   |           |
+          |  [organization_domain_name].crt   |           |
+          |----SSL cert signed ---------------|           |
+          |                                               |
+          |    [intermediate.crt]                        <|
+          |---Certificate of Intermediate CA signed by Root CA
+        Browser
+       [Root CA]
+     1. Public Key extracted of the [organization_domain_name].crt
+     2. Generates a symmetric key
+          |
+          |----- Encrypted+With+PublicKey[Sim key]-------> Organization server
+                                                       --  Decrypt with Private key [Sim Key] --
+          <--  Encrypted communication with the Sim Key   -->
+
+
+** Creating a self-signed certificate suitable for testing
+
+1. Generate an Unencrypted PEM encoded RSA private
+< openssl genrsa -out yourdomain.com.key 1024
+> openssl genrsa -out rsa_private_key.key 2048
+
+2. Generate .csr
+
+# B) Generate a CSR for an Existing Private Key
+[Best option]
+< openssl req -new -key yourdomain.com.key -out yourdomain.com.csr
+> openssl req -new -key rsa_private_key.key -out request.csr
+
+# A) To generate a public and private key with a certificate signing request (CSR)
+< openssl req -new -newkey rsa:2048 -nodes -keyout name.unencrypted.priv.key -out name.csr
+
+# C) Generate a CSR for an Existing Certificate and Private Key
+[you need to renew your existing certificate, but neither you nor your certificate authority have the original CSR]
+< openssl x509 -x509toreq -in certificate.crt -out CSR.csr -signkey privateKey.key
+
+# D) Generate a Self-Signed Certificate
+ [Test and development environments]
+< openssl req -newkey rsa:2048 -nodes -keyout domain.key-x509 -days 365 -out domain.crt
+
+# E) Generate a Self-Signed Certificate from an Existing Private Key and CSR
+< openssl x509  \ -signkey domain.key  \ -in domain.csr \ -req -days 365  -out domain.crt
+
+    -- decode .csr:  openssl req -in server.csr -noout -text
+    -- verify -csr:  openssl req -text -noout -verify -in server.csr
+    -- verify .key:  openssl rsa -in server.key -check
+    -- verify .cert: openssl x509 -in server.crt -text –noout
+
+
+3. Generate .cert
+openssl x509 -req -days 365 -in yourdomain.com.csr -signkey yourdomain.com.key -out yourdomain.com.crt
+
+** ** ** **
+-- Convert a PEM CSR and private key to PKCS12 (.pfx .p12)
+openssl pkcs12 \ -inkey domain.key \ -in domain.crt \ -export -out domain.pfx
+
+-- Convert a PKCS12 to PEM CSR
+openssl pkcs12 \ -in domain.pfx \ -nodes -out domain.combined.crt
+
+-- Convert PEM to DER [DER is a binary format usually used with Java]
+openssl x509 \ -in domain.crt \ -outform der -out domain.der
+
+-- Convert DER to PEM
+openssl x509 \ -inform der -in domain.der \ -out domain.crt
+
+-- Encrypt an Unencrypted Private Key  _enter passphrase
+openssl rsa -des3 \ -in unencrypted.key \ -out encrypted.key
+
+-- Decrypt an Encrypted Private Key   _enter passphrase
+openssl rsa \ -in encrypted.key \ -out decrypted.key
+
+-- .cert to .pem
+openssl pkcs8 -topk8 -nocrypt -in yourdomain.com.key -out server.pem
+
+
+
+* * * * * *
+See also this
+https://rishi871.medium.com/oauth-key-terminology-explained-67d223af03a3
+
