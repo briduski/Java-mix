@@ -1,6 +1,7 @@
 package org.example.webs.geeksforgeeks.systemclass;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.channels.Channel;
 import java.util.*;
 
@@ -103,11 +104,27 @@ public class Playing {
        /* for(String key : keySet) {
             System.out.println("key= " + key);
         }*/
-        gfg.forEach((k,v)->  System.out.println(k+ " : " + v));
+//        gfg.forEach((k,v)->  System.out.println(k+ " : " + v));
 
         // checking specific environment variable
+        setEnv("rar","value=rar");
+        //VM options: -Drar=value=rar
         System.out.println("- PATH env var: "+ System.getenv("PATH"));
+        System.out.println("- rar env var: "+ System.getenv("rar"));
     }
+    public static void setEnv(String key, String value) {
+        try {
+            Map<String, String> env = System.getenv();
+            Class<?> cl = env.getClass();
+            Field field = cl.getDeclaredField("m");
+            field.setAccessible(true);
+            Map<String, String> writableEnv = (Map<String, String>) field.get(env);
+            writableEnv.put(key, value);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to set environment variable", e);
+        }
+    }
+
     public static void secManager() {
         SecurityManager gfg = new SecurityManager();
 
@@ -182,7 +199,7 @@ public class Playing {
     public static void main(String[] args) throws IOException {
         //copyArrays();
         // systemProperties();
-        // envProperties();
+         envProperties();
         //  times();
         // consconsole();
         // garbageColl();
@@ -191,14 +208,14 @@ public class Playing {
         // secManager();
         // std();
         // loadLib();
-        setToEnvironmentPropertyAFile();
-        Runtime.getRuntime().addShutdownHook(new Thread(
-                () -> System.out.println("Say exit, bye, chao")
-        ));
-
-
-        Integer x = 400;
-        System.out.println(System.identityHashCode(x));
+//        setToEnvironmentPropertyAFile();
+//        Runtime.getRuntime().addShutdownHook(new Thread(
+//                () -> System.out.println("Say exit, bye, chao")
+//        ));
+//
+//
+//        Integer x = 400;
+//        System.out.println(System.identityHashCode(x));
 
     }
 
